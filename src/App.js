@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import logo from './logo.svg';
 import './App.css';
 import RoomList from './components/RoomList';
 
@@ -22,8 +21,10 @@ class App extends Component {
         <header>
           <h1>Bloc Chat </h1>
         </header>
+        <main>
+          <RoomList firebase={firebase} />
+        </main>
 
-      
       </div>
     );
   }
