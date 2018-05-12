@@ -4,9 +4,16 @@ class MessageList extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         messages: []
+      messages:[{
+  		  username: "",
+  		  sentAt: "",
+  		  content: "",
+  		  roomId: "",
+		}]
       };
       this.messagesRef = this.props.firebase.database().ref('messages');
+      this.state.messages.sentAt = this.props.firebase.database.ServerValue.TIMESTAMP;
+
    }
 
    componentDidMount() {
@@ -49,3 +56,8 @@ class MessageList extends Component {
   }
 
 export default MessageList;
+
+//Create a MessageList component. Like the RoomList component, it should receive
+// firebase as a prop and use the child_added event to add messages to the state.
+// active room should be stored in the App component's state object so that the title of
+//the active room changes every time you visit a different room.
