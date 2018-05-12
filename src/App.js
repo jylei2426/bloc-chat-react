@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import './App.css';
 import RoomList from './components/RoomList';
+import MessageList from './components/messageList';
+
 
 // Initialize Firebase
   var config = {
@@ -14,20 +16,45 @@ import RoomList from './components/RoomList';
   };
   firebase.initializeApp(config);
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header>
-          <h1>Bloc Chat </h1>
-        </header>
-        <main>
-          <RoomList firebase={firebase} />
-        </main>
+  class App extends Component {
+      constructor(props) {
+          super(props);
+          this.state = {
+              activeRoom: ""
+          }
+      }
 
-      </div>
-    );
+
+      selectRoom(room) {
+          this.setState({
+              activeRoom: room
+          })
+      }
+      render() {
+          return (
+          <section>
+            <div id='message-list'>
+              <MessageList
+                firebase={firebase}
+                selectRoom={(e) => this.selectRoom(e)}
+                activeRoom={this.state.activeRoom.key}
+                activeRoomName={this.state.activeRoom.name}
+              />
+            </div>
+            <aside>
+              <h1>Bloc Chat</h1>
+              <section>
+                <RoomList
+                  firebase={firebase}
+                  selectRoom={(e) => this.selectRoom(e)}
+                  activeRoom={this.state.activeRoom}
+                />
+              </section>
+            </aside>
+
+          </section>
+          );
+      }
   }
-}
 
 export default App;
