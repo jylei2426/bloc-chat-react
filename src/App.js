@@ -20,7 +20,7 @@ import MessageList from './components/messageList';
       constructor(props) {
           super(props);
           this.state = {
-              activeRoom: ""
+          activeRoom: ""
           }
       }
 
