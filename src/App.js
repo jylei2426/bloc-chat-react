@@ -26,6 +26,7 @@ import MessageList from './components/messageList';
 
 
       selectRoom(room) {
+        console.log("this selected Room works")
           this.setState({
               activeRoom: room
           })
@@ -36,7 +37,7 @@ import MessageList from './components/messageList';
             <div id='message-list'>
               <MessageList
                 firebase={firebase}
-                selectRoom={(e) => this.selectRoom(e)}
+                selectRoom={this.selectRoom.bind(this)}
                 activeRoom={this.state.activeRoom.key}
                 activeRoomName={this.state.activeRoom.name}
               />
@@ -46,7 +47,7 @@ import MessageList from './components/messageList';
               <section>
                 <RoomList
                   firebase={firebase}
-                  selectRoom={(e) => this.selectRoom(e)}
+                  selectRoom={this.selectRoom.bind(this)}
                   activeRoom={this.state.activeRoom}
                 />
               </section>
