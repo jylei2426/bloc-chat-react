@@ -35,21 +35,22 @@ class RoomList extends Component {
 
    render() {
       return (
-         <div>
+          <section className='RoomList'>
             {
               this.state.rooms.map( (room, index) =>
-              <div key={room.key}> onClick={() => this.props.selectRoom(room)}>
-                      {room.name}
+               <ul className="chatroomlist" key={index} >
+               <li onClick={() => this.props.selectRoom(room)}>{room.name}
+          
+               </li>
+               </ul>)
 
-        </div>
-            )
            }
           <form onSubmit={ (e) => this.createRoom(e)}>
           <input type="text" value={ this.state.newChatRoom } onChange={ (e) => this.handleChange(e) } placeholder="Choose a Room Name" />
           <input type= "submit" value='Create Room' />
           </form>
 
-         </div>
+         </section>
       )
    }
 }
