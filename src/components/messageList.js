@@ -13,7 +13,7 @@ class MessageList extends Component {
 		}]
 	};
 
-	this.messageRef = this.props.firebase.database().ref('messages');
+	this.messageRef = this.props.firebase.database().ref('Messages');
 	this.state.messages.sentAt = this.props.firebase.database.ServerValue.TIMESTAMP;
   }
 
