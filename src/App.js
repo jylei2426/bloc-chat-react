@@ -16,46 +16,43 @@ import MessageList from './components/messageList';
   };
   firebase.initializeApp(config);
 
-  class App extends Component {
-      constructor(props) {
-          super(props);
-          this.state = {
-          activeRoom: ""
-          }
-      }
 
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-      selectRoom(room) {
-        console.log("this selected Room works")
-          this.setState({
-              activeRoom: room
-          })
-      }
-      render() {
-          return (
-          <section>
-            <div id='message-list'>
-              <MessageList
-                firebase={firebase}
-                selectRoom={this.selectRoom.bind(this)}
-                activeRoom={this.state.activeRoom.key}
-                activeRoomName={this.state.activeRoom.name}
-              />
-            </div>
-            <aside>
-              <h1>Bloc Chat</h1>
-              <section>
-                <RoomList
-                  firebase={firebase}
-                  selectRoom={this.selectRoom.bind(this)}
-                  activeRoom={this.state.activeRoom}
-                />
-              </section>
-            </aside>
-
-          </section>
-          );
-      }
+    this.state = {
+      activeRoom: "",
+      activeRoomKey: "",
+    };
   }
+
+  handleActiveRoom(room) {
+    this.setState({ activeRoom: room });
+    this.setState({ activeRoomKey: room.key });
+    console.log (room)
+  }
+
+  render() {
+    return (
+      <div>
+        <header>
+          <h1>Bloc Chat</h1>
+        </header>
+        <aside>
+          <RoomList firebase={firebase}
+          activeRoom={this.handleActiveRoom.bind(this)}/>
+        </aside>
+        <div>
+          <h2>{this.state.activeRoom.name}</h2>
+        </div>
+        <main>
+          <MessageList firebase={firebase}
+          activeRoomKey={this.state.activeRoomKey}/>
+        </main>
+      </div>
+    );
+  }
+}
 
 export default App;
