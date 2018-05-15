@@ -1,13 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class RoomList extends Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         rooms: []
-      };
-      this.roomsRef = this.props.firebase.database().ref('rooms');
-   }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      rooms: [],
+      newRoomName: "",
+    };
+
+    this.createRoom = this.createRoom.bind(this);
+    this.roomsRef = this.props.firebase.database().ref('rooms');
+  }
+
 
    componentDidMount() {
       this.roomsRef.on('child_added', snapshot => {
@@ -32,27 +37,31 @@ class RoomList extends Component {
      this.setState({newRoomName: e.target.value})
    }
 
+   selectRoom(room) {
+  	this.props.activeRoom(room);
+  }
 
-   render() {
-      return (
-          <section className='RoomList'>
-            {
-              this.state.rooms.map( (room, index) =>
-               <ul className="chatroomlist" key={index} >
-               <li onClick={() => this.props.selectRoom(room)}>{room.name}
-          
-               </li>
-               </ul>)
 
-           }
-          <form onSubmit={ (e) => this.createRoom(e)}>
-          <input type="text" value={ this.state.newChatRoom } onChange={ (e) => this.handleChange(e) } placeholder="Choose a Room Name" />
+  render() {
+   return(
+     <div className='roomlist'>
+       <ul>{this.state.rooms.map( (room, index) => {
+           return(
+             <div className='room' key={index}
+             onClick={ (e) => this.selectRoom(room, e) }>{room.name}</div>
+             );
+       })}
+     </ul>
+     <form onSubmit={ (e) => this.createRoom(e)}>
+          <input type="text"
+            value={ this.state.newChatRoom }
+            onChange={ (e) => this.handleChange(e) }
+            placeholder="Choose a Room Name" />
           <input type= "submit" value='Create Room' />
           </form>
-
-         </section>
-      )
-   }
+		</div>
+	);
+  }
 }
 
 export default RoomList;
