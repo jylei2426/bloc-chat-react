@@ -1,59 +1,50 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class MessageList extends Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-      messages:[{
-  		  username: "",
-  		  sentAt: "",
-  		  content: "",
-  		  roomId: "",
+  constructor(props) {
+	super(props);
+
+	this.state = {
+		messages: [{
+		  username: "",
+		  sentAt: "",
+		  content: "",
+		  roomId: "",
 		}]
-      };
-      this.messagesRef = this.props.firebase.database().ref('messages');
-      this.state.messages.sentAt = this.props.firebase.database.ServerValue.TIMESTAMP;
+	};
 
-   }
-
-   componentDidMount() {
-      this.messagesRef.on('child_added', snapshot => {
-         //console.log(snapshot);
-         const message = snapshot.val();
-         message.key = snapshot.key;
-         this.setState({ rooms: this.state.messages.concat(message) });
-      });
-   }
-
-   render() {
-          return (
-        <section className='MessageList' >
-          <table id="messages-sent">
-            <thead>
-              <tr>
-                <th>{this.props.activeRoomName}</th>
-              </tr>
-            </thead>
-            <colgroup>
-              <col id ="username-column"/>
-              <col id ="time-sent-column"/>
-              <col id ="content-column"/>
-            </colgroup>
-            <tbody>
-              { this.state.messages.map((message,index) =>
-                message.roomId === this.props.activeRoom &&
-                <tr className="message-data" key={index}>
-                  <td className="username">{message.username}</td>
-                  <td className="time-sent">{message.sentAt}</td>
-                  <td className="content">{message.content}</td>
-                </tr>
-              )
-            }
-            </tbody>
-          </table>
-        </section>);
-      }
+	this.messageRef = this.props.firebase.database().ref('messages');
+	this.state.messages.sentAt = this.props.firebase.database.ServerValue.TIMESTAMP;
   }
+
+  componentDidMount() {
+  	this.messageRef.on('child_added', snapshot => {
+    	const message = snapshot.val();
+    	message.key = snapshot.key;
+    	this.setState({ messages: this.state.messages.concat(message) })
+  		});
+  }
+
+  render() {
+  	const activeRoomKey = this.props.activeRoomKey;
+
+	return(
+		<div>
+			<ul>
+    			{this.state.messages.map( (message, index) => {
+    				if (activeRoomKey === "") {
+    					return null
+    				} else if (message.roomId == activeRoomKey) {
+       				  	return (
+       				  		<li className="message" key={index}>{message.username}: {message.content}</li>
+       				  	)
+       				}
+       			})}
+       		</ul>
+		</div>
+	);
+  }
+}
 
 export default MessageList;
 
