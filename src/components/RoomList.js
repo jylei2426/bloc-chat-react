@@ -27,13 +27,14 @@ class RoomList extends Component {
      e.preventDefault();
      // if (!this.state.newChatRoom) { return }
       // const newRoom = { roomName: this.state.newChatRoom }
-     this.roomsRef.push({
+    this.roomsRef.push({
      name: this.state.newRoomName
      });
      console.log('New Room Added!');
      this.setState({ newChatRoom: '' });
 
    }
+
 
    handleChange(e){
      this.setState({newRoomName: e.target.value})

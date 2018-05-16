@@ -13,7 +13,7 @@ class MessageList extends Component {
 		}]
 	};
 
-	this.messageRef = this.props.firebase.database().ref('messages');
+	this.messageRef = this.props.firebase.database().ref('Messages');
 	this.state.messages.sentAt = this.props.firebase.database.ServerValue.TIMESTAMP;
   }
 
@@ -22,7 +22,9 @@ class MessageList extends Component {
     	const message = snapshot.val();
     	message.key = snapshot.key;
     	this.setState({ messages: this.state.messages.concat(message) })
+
   		});
+      console.log(this.state.message)
   }
 
   render() {
@@ -30,17 +32,19 @@ class MessageList extends Component {
 
 	return(
 		<div>
-			<ul>
-    			{this.state.messages.map( (message, index) => {
-    				if (activeRoomKey === "") {
-    					return null
-    				} else if (message.roomId == activeRoomKey) {
-       				  	return (
-       				  		<li className="message" key={index}>{message.username}: {message.content}</li>
-       				  	)
-       				}
-       			})}
-       		</ul>
+
+    <ul>
+    {this.state.messages.map( (message, index) => {
+        if (activeRoomKey === "") {
+            return null
+          } else if (message.roomId == activeRoomKey) {
+             return (
+         <li className="message" key={index}>{message.username}: {message.content}</li>
+                                 )
+                           }
+                       })}
+                   </ul>
+
 		</div>
 	);
   }
