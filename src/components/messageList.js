@@ -10,7 +10,8 @@ class MessageList extends Component {
 		  sentAt: "",
 		  content: "",
 		  roomId: "",
-		}]
+		}],
+     newMessage: "",
 	};
 
 	this.messageRef = this.props.firebase.database().ref('Messages');
@@ -27,6 +28,33 @@ class MessageList extends Component {
       console.log(this.state.message)
   }
 
+//Use the .push() method on your messages reference to add new messages, just as you did when
+//creating new rooms in the RoomList component.
+
+  createMessage(e) {
+    e.preventDefault();
+    const newMessage = this.state.newMessage;
+
+    this.messageRef.push({
+      username: this.props.username,
+      sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
+      content: newMessage,
+      roomId: this.props.activeRoomKey,
+    });
+
+    this.setState({ newMessage: "" });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    if(!this.state.content) {return}
+  }
+
+  handleChange(e) {
+    this.setState({ newMessage: e.target.value });
+  }
+
+
   render() {
   	const activeRoomKey = this.props.activeRoomKey;
 
@@ -34,6 +62,7 @@ class MessageList extends Component {
 		<div>
 
     <ul>
+
     {this.state.messages.map( (message, index) => {
         if (activeRoomKey === "") {
             return null
@@ -44,6 +73,20 @@ class MessageList extends Component {
                            }
                        })}
                    </ul>
+
+          <section>
+            {activeRoomKey === "" ?
+             null
+              :
+             <form onSubmit={ (e) => this.handleSubmit(e) }>
+              <input type='text' name='newMessage'
+              placeholder='Enter message here.'
+              value={this.state.newMessage} 
+              onChange={ (e) => this.handleChange(e) } />
+              <input type='submit' value='Send' onClick={ (e) => this.createMessage(e) } />
+              </form>
+               }
+            </section>
 
 		</div>
 	);
